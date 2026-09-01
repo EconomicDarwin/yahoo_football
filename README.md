@@ -1,14 +1,14 @@
-# Fourth and 2wenty — league history and analytics
+# Fourth and 2wenty: league history and analytics
 
 A personal, read-only toolkit for one Yahoo fantasy football keeper league that
 has been running for about sixteen years with largely the same group of friends.
 
 The point is the **historical record**. Yahoo's own interface is built around the
-current season; everything before it is buried, and sixteen years of drafts,
+current season. Everything before it is buried, and sixteen years of drafts,
 trades, blowouts and grudges are effectively unqueryable. This archives the whole
-league history to local JSON and builds analysis on top of it — an all-time
+league history to local JSON and builds analysis on top of it: an all-time
 record book, head-to-head rivalries, luck-adjusted standings, draft and trade
-retrospectives — plus the yearly keeper decision that started the project.
+retrospectives, plus the yearly keeper decision that started the project.
 
 Not a product. Not hosted, not distributed, no users beyond the one running it.
 
@@ -22,7 +22,7 @@ Not a product. Not hosted, not distributed, no users beyond the one running it.
 Yahoo does not keep old league seasons available forever, and there is no export.
 A sixteen-year record that lives only on their servers is one product decision
 away from being gone. `pull` writes every season to JSON on disk, and that
-archive — not the API — is what the analysis reads. Fast, reproducible, offline,
+archive, not the API, is what the analysis reads. Fast, reproducible, offline,
 and durable.
 
 ## Shipped today
@@ -44,7 +44,7 @@ would actually cost in this year's draft.
 **Why it isn't just round subtraction.** Counting surplus in *rounds* is
 misleading, because draft value is convex. Turning a 15th into a 7th is eight
 rounds, but it moves you between two cheap picks. Turning a 6th into a 2nd is
-only four rounds, but it buys a genuine first-round-caliber player — worth much
+only four rounds, but it buys a genuine first-round-caliber player, worth much
 more.
 
 So `keepers.py` converts rounds to overall picks and scores them on a decay
@@ -52,7 +52,7 @@ curve, `value(pick) = exp(-(pick - 1) / TAU)` with `TAU = 40` picks. The ranking
 sorts on curve-adjusted surplus and prints the raw round difference beside it as
 a sanity check. Tune per league with `pick_value_tau` in `leagues.json`.
 
-A worked example — the two candidates that mattered in 2025:
+A worked example, using the two candidates that mattered in 2025:
 
 | Player | Keeper cost | Market | Rounds | Curve-adjusted |
 | --- | --- | --- | --- | --- |
@@ -82,8 +82,8 @@ worst seasons.
 record and average margin, and each manager's all-time nemesis and favourite
 victim.
 
-**Luck vs. skill.** The interesting one. An *all-play* record — what your record
-would have been if you played every team every week — separates real performance
+**Luck vs. skill.** The interesting one. An *all-play* record (what your record
+would have been if you played every team every week) separates real performance
 from schedule luck. Add close-game record (games decided by a few points),
 points-against luck, and the gap between expected and actual wins, and you can
 finally settle who has actually been good versus who has been fortunate.
@@ -94,7 +94,7 @@ stats in fantasy and nobody in a league ever has it.
 
 **Draft retrospectives.** Points returned per draft slot, best and worst picks in
 league history, hit rate by round, and whether each year's keepers actually paid
-off — which closes the loop on the tool's original purpose.
+off, which closes the loop on the tool's original purpose.
 
 **Transactions and trades.** Waiver-wire ROI (points a player scored *after*
 being added), trade retrospectives scoring what each side actually got, and
@@ -109,13 +109,13 @@ Worth writing down before building any of the above:
 
 - **Manager identity across sixteen years.** Team names change constantly, so
   they are useless as a key. Yahoo exposes a stable manager GUID on
-  `Team.managers` — everything historical must join on that, not on team or
+  `Team.managers`, and everything historical must join on that, not on team or
   display name.
 - **Scoring settings changed over the years.** Raw points are not comparable
   across eras. Cross-season comparisons need normalizing (z-scores within a
   season, or restating under current scoring).
 - **Roster and lineup slots changed too**, which affects any optimal-lineup
-  calculation; it has to use that season's actual slot configuration.
+  calculation. It has to use that season's actual slot configuration.
 - **Old seasons may be thin.** Yahoo's coverage of the earliest years is
   untested and some endpoints may return nothing. Worth probing before promising
   a complete record book.
@@ -143,8 +143,9 @@ See **[SETUP.md](SETUP.md)**. Short version:
 
 1. Register a Yahoo app as a **Confidential Client** with redirect URI
    `https://localhost:8080`.
-2. Put the Client ID and Secret in `.env` (BOM-free — SETUP.md has the exact
-   command; a UTF-8 BOM silently hides the first variable from `python-dotenv`).
+2. Put the Client ID and Secret in `.env`, which must be BOM-free. SETUP.md has
+   the exact command, and a UTF-8 BOM silently hides the first variable from
+   `python-dotenv`.
 3. `python -m ffball.discover --save` to log in and record league IDs.
 
 ```
@@ -159,14 +160,14 @@ python -m ffball.doctor            # offline checks
 python -m ffball.doctor --online   # plus one live API call
 ```
 
-`doctor` only reports; it never changes anything.
+`doctor` only reports and never changes anything.
 
 ## Commands
 
 | Command | What it does |
 | --- | --- |
 | `python -m ffball.doctor [--online]` | Verify the setup and diagnose what's wrong |
-| `python -m ffball.discover [--save] [--match NAME]` | List leagues by season; record their IDs |
+| `python -m ffball.discover [--save] [--match NAME]` | List leagues by season and record their IDs |
 | `python -m ffball.pull --season 2025` | Archive one season to `data/` |
 | `python -m ffball.pull --all-seasons` | Archive every recorded season |
 | `python -m ffball.pull --all-seasons --delay 2` | Same, pacing calls 2s apart |
@@ -189,7 +190,7 @@ data that is already archived.
 
 - Yahoo player keys (`461.p.31883`) carry a per-season game key prefix, so only
   the trailing player id is stable year over year. `client.player_id_of()`
-  normalizes this; anything joining across seasons must use it.
+  normalizes this, and anything joining across seasons must use it.
 - Past seasons need the query pinned via `client.for_league(season)`. A bare
   query answers for the current season only.
 - ADP is only published once Yahoo opens the new season's draft board. Before
@@ -202,4 +203,4 @@ Yahoo Fantasy.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).

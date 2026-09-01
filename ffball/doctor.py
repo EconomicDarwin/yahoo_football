@@ -21,7 +21,7 @@ from . import cli, config
 
 OK, WARN, FAIL = "ok", "warn", "FAIL"
 
-# Yahoo client IDs are long and start with "dj0y"; secrets are 40 hex chars.
+# Yahoo client IDs are long and start with "dj0y". Secrets are 40 hex chars.
 EXPECTED_KEY_PREFIX = "dj0y"
 EXPECTED_SECRET_LEN = 40
 
@@ -55,7 +55,7 @@ def has_bom() -> bool:
 
 
 def read_env_lines() -> List[str]:
-    # utf-8-sig so the rest of the checks still work on a BOM'd file; has_bom()
+    # utf-8-sig so the rest of the checks still work on a BOM'd file. has_bom()
     # reports the problem separately.
     return config.ENV_FILE.read_text(encoding="utf-8-sig").splitlines()
 
@@ -82,14 +82,14 @@ def check_dependencies(report: Report) -> None:
         report.add(
             FAIL,
             "yfpy installed",
-            f"{exc} — run: .\\.venv\\Scripts\\python.exe -m pip install -r requirements.txt",
+            f"{exc}. Run: .\\.venv\\Scripts\\python.exe -m pip install -r requirements.txt",
         )
 
     if ".venv" not in sys.executable:
         report.add(
             WARN,
             "using the project venv",
-            "you are on a different interpreter; use .\\.venv\\Scripts\\python.exe",
+            "you are on a different interpreter. Use .\\.venv\\Scripts\\python.exe",
         )
     else:
         report.add(OK, "using the project venv", "")
@@ -100,7 +100,7 @@ def check_env_file(report: Report) -> bool:
         report.add(
             FAIL,
             ".env exists",
-            "not found — see SETUP.md step 2 for the BOM-free command that creates it",
+            "not found. See SETUP.md step 2 for the BOM-free command that creates it",
         )
         return False
     report.add(OK, ".env exists", str(config.ENV_FILE))
@@ -112,8 +112,8 @@ def check_env_file(report: Report) -> bool:
         report.add(
             FAIL,
             ".env encoding",
-            "file starts with a UTF-8 BOM, which hides the first variable — "
-            "rewrite it with: Set-Content .env -Encoding ascii",
+            "file starts with a UTF-8 BOM, which hides the first variable. "
+            "Rewrite it with: Set-Content .env -Encoding ascii",
         )
         ready = False
     else:
@@ -131,13 +131,13 @@ def check_env_file(report: Report) -> bool:
 
         value = raw.strip()
         if not value or "paste-your" in value:
-            report.add(FAIL, name, "still the placeholder — paste the real value")
+            report.add(FAIL, name, "still the placeholder. Paste the real value")
             ready = False
             continue
         if raw != raw.strip():
-            report.add(WARN, name, "has surrounding whitespace; remove it")
+            report.add(WARN, name, "has surrounding whitespace. Remove it")
         if value[0] in "\"'" or value[-1] in "\"'":
-            report.add(FAIL, name, "wrapped in quotes — remove them")
+            report.add(FAIL, name, "wrapped in quotes. Remove them")
             ready = False
             continue
 
@@ -145,13 +145,13 @@ def check_env_file(report: Report) -> bool:
             report.add(
                 WARN,
                 name,
-                f"does not start with {expectation!r}; double-check you copied the Client ID",
+                f"does not start with {expectation!r}. Double-check you copied the Client ID",
             )
         elif name == "YAHOO_CONSUMER_SECRET" and len(value) != EXPECTED_SECRET_LEN:
             report.add(
                 WARN,
                 name,
-                f"is {len(value)} chars, expected {EXPECTED_SECRET_LEN}; double-check the Client Secret",
+                f"is {len(value)} chars, expected {EXPECTED_SECRET_LEN}. Double-check the Client Secret",
             )
         else:
             report.add(OK, name, f"set ({len(value)} chars)")
@@ -165,7 +165,7 @@ def check_env_file(report: Report) -> bool:
         report.add(
             WARN,
             "logged in",
-            "no token yet — run: python -m ffball.discover --save",
+            "no token yet, run: python -m ffball.discover --save",
         )
     return ready
 
@@ -179,7 +179,7 @@ def check_gitignore(report: Report) -> None:
             cwd=config.PROJECT_ROOT,
         )
     except FileNotFoundError:
-        report.add(WARN, ".env is gitignored", "git not on PATH; could not verify")
+        report.add(WARN, ".env is gitignored", "git not on PATH. Could not verify")
         return
 
     if result.returncode == 0:
@@ -188,7 +188,7 @@ def check_gitignore(report: Report) -> None:
         report.add(
             FAIL,
             ".env is gitignored",
-            "NOT ignored — do not commit until fixed",
+            "NOT ignored. Do not commit until fixed",
         )
 
 
@@ -212,7 +212,7 @@ def check_leagues(report: Report) -> None:
         report.add(
             WARN,
             "seasons recorded",
-            "none yet — run: python -m ffball.discover --save",
+            "none yet, run: python -m ffball.discover --save",
         )
 
 
@@ -229,11 +229,11 @@ def check_online(report: Report) -> None:
         report.add(OK, "fantasy API access", "granted")
     except Exception as exc:  # noqa: BLE001
         if cli.looks_unauthorized(exc):
-            report.add(OK, "live API call", "reached Yahoo; credentials accepted")
+            report.add(OK, "live API call", "reached Yahoo, credentials accepted")
             report.add(
                 FAIL,
                 "fantasy API access",
-                "NOT granted — apply at https://sports.yahoo.com/developer/access/ "
+                "NOT granted. Apply at https://sports.yahoo.com/developer/access/ "
                 "(see SETUP.md)",
             )
         else:
@@ -261,7 +261,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if creds_ready:
             check_online(report)
         else:
-            report.add(WARN, "live API call", "skipped — fix the credential errors first")
+            report.add(WARN, "live API call", "skipped. Fix the credential errors first")
 
     report.render()
 

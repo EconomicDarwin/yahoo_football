@@ -9,13 +9,13 @@ a step worked:
 .\.venv\Scripts\python.exe -m ffball.doctor
 ```
 
-Run it whenever you want. It only reports; it never changes anything.
+Run it whenever you want. It only reports and never changes anything.
 
 ---
 
-## Step 0 — Open the right terminal
+## Step 0: Open the right terminal
 
-Open **Windows PowerShell** (not through Claude — step 3 needs a real
+Open **Windows PowerShell** (not through Claude, because step 3 needs a real
 interactive prompt) and go to the project:
 
 ```powershell
@@ -28,16 +28,16 @@ Confirm the tooling is healthy before touching Yahoo:
 .\.venv\Scripts\python.exe -m ffball.doctor
 ```
 
-Expect green on Python, yfpy, and the venv, and a red `.env exists` — that is
-correct at this stage, it's what step 2 creates.
+Expect green on Python, yfpy, and the venv, and a red `.env exists`. That is
+correct at this stage, since it is what step 2 creates.
 
 ---
 
-## Step 1 — Create the Yahoo app
+## Step 1: Create the Yahoo app
 
 > **The form changed in 2025 and most guides online (including yfpy's own docs)
 > are out of date.** There is no longer an "Installed Application" radio
-> button, and — importantly — **there is no Fantasy Sports checkbox under API
+> button, and, importantly, **there is no Fantasy Sports checkbox under API
 > Permissions**. Yahoo moved Fantasy Sports access behind a separate approval
 > process. See "Fantasy Sports API access" below.
 
@@ -59,14 +59,14 @@ Why those last two matter:
 
 - **Confidential Client is required.** It is the option that issues a Client
   Secret. Public Client issues an ID only, and this tooling authenticates with
-  a secret — picking Public would leave you unable to complete step 2.
+  a secret, so picking Public would leave you unable to complete step 2.
 - **Leave OpenID Connect Permissions and TW Auction unchecked.** Neither grants
   fantasy access. OpenID Connect only adds profile/email scopes you don't need,
   and TW Auction is unrelated.
 - **Redirect URI is required even though it is never used.** The library
-  authenticates out-of-band — Yahoo shows you a code to paste rather than
+  authenticates out-of-band: Yahoo shows you a code to paste rather than
   redirecting anywhere. Yahoo just refuses to save the form with the field
-  empty. `https://localhost:8080` is fine; it does not need to be reachable.
+  empty. `https://localhost:8080` is fine and does not need to be reachable.
 
 Click **Create App**.
 
@@ -89,8 +89,8 @@ oauth_problem="additional_authorization_required"
 ```
 
 That is Yahoo saying the token is valid but the app has no Fantasy Sports
-entitlement. There is no workaround in the app settings — the permission is
-simply not offered on the form any more. Approval is the only path.
+entitlement. There is no workaround in the app settings, because the permission
+is simply not offered on the form any more. Approval is the only path.
 
 Two things this does *not* mean: your credentials are not wrong, and your login
 is not wasted. The tokens are saved in `.env`, so once access is granted
@@ -99,14 +99,14 @@ everything works with no need to log in again.
 `python -m ffball.doctor --online` reports this state explicitly:
 
 ```
-[ ok ] live API call           reached Yahoo; credentials accepted
-[FAIL] fantasy API access      NOT granted — apply at https://sports.yahoo.com/developer/access/
+[ ok ] live API call           reached Yahoo, credentials accepted
+[FAIL] fantasy API access      NOT granted. Apply at https://sports.yahoo.com/developer/access/
 ```
 
 Apply at **<https://sports.yahoo.com/developer/access/>**. Yahoo warns that
 "incomplete or insufficiently detailed submissions cannot be evaluated and will
 be closed without further correspondence," so answer specifically. Personal and
-single-league use is an explicitly eligible category — say so plainly rather
+single-league use is an explicitly eligible category, so say so plainly rather
 than dressing the project up as a company.
 
 **Do not delete or recreate the Yahoo app before applying.** The form has a
@@ -121,10 +121,10 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 | Business Title | `Commissioner, Fourth and 2wenty fantasy football league (personal project, not a business)` |
 | Email Address | `[the email on your Yahoo account]` |
 | Phone Number | `[your phone]` |
-| Business Name & Address | `Individual — no business entity. Personal project. [city, state, ZIP]` |
+| Business Name & Address | `Individual, no business entity. Personal project. [city, state, ZIP]` |
 | Consumer-Facing Product or App Name | `Fourth and 2wenty League Tools (private, not distributed)` |
-| Website URL or App Store Details | `https://github.com/EconomicDarwin/yahoo_football` — this field is validated as a URL, so prose is rejected. The public repo is the honest answer and shows a reviewer exactly what the tool does. |
-| Expected Users | `Small (under 1,000)` — realistically one |
+| Website URL or App Store Details | `https://github.com/EconomicDarwin/yahoo_football`. This field is validated as a URL, so prose is rejected. The public repo is the honest answer and shows a reviewer exactly what the tool does. |
+| Expected Users | `Small (under 1,000)`, realistically one |
 | Client ID | the Client ID from the YDN app you already created |
 
 **Brief Company Description**
@@ -150,7 +150,7 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 >
 > A secondary function is the yearly keeper decision. Our league lets each
 > manager retain one player at the draft-round cost that player was drafted at
-> the previous season; the tool compares that cost against the player's current
+> the previous season, and the tool compares that cost against the player's current
 > average draft position. I currently do this by reading screenshots of the
 > draft board by hand.
 >
@@ -165,11 +165,11 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 
 **Additional Notes**
 
-> Read-only access is sufficient; I do not need write access.
+> Read-only access is sufficient. I do not need write access.
 >
 > Request volume is dominated by a one-time historical backfill of roughly
-> sixteen seasons — on the order of several hundred requests, more if I pull
-> week-by-week rosters — which I will run gradually rather than all at once.
+> sixteen seasons, on the order of several hundred requests (more if I pull
+> week-by-week rosters), which I will run gradually rather than all at once.
 > Everything is written to local JSON and read from there afterwards, so the
 > backfill happens once and is never repeated. Ongoing use after that is
 > minimal: a refresh during the season and some activity around the draft.
@@ -188,10 +188,10 @@ Read access is all Yahoo currently offers, and all this tooling needs.
 
 ---
 
-## Step 2 — Save the credentials
+## Step 2: Save the credentials
 
 **Do not create `.env` in Notepad.** Notepad and PowerShell's `Out-File` both
-write a UTF-8 BOM, and a BOM silently hides the *first* variable in the file —
+write a UTF-8 BOM, and a BOM silently hides the *first* variable in the file, so
 you get "no consumer key found" with a file that looks perfect on screen. I hit
 this while testing, so it is a real trap, not a theoretical one.
 
@@ -220,19 +220,19 @@ You want to see:
 [ ok ] YAHOO_CONSUMER_KEY      set (96 chars)
 [ ok ] YAHOO_CONSUMER_SECRET   set (40 chars)
 [ ok ] .env is gitignored      credentials will not be committed
-[warn] logged in               no token yet — run: python -m ffball.discover --save
+[warn] logged in               no token yet, run: python -m ffball.discover --save
 ```
 
-That last warning is expected — step 3 clears it.
+That last warning is expected, and step 3 clears it.
 
-The key's length varies by account (90-100 chars is typical); only the `dj0y`
-prefix is meaningful. The secret is always exactly 40. If the key check warns
-about the prefix, or the secret is not 40 chars, you've likely swapped the two
-values or copied a partial string; redo this step.
+The key's length varies by account (90-100 chars is typical), and only the
+`dj0y` prefix is meaningful. The secret is always exactly 40. If the key check
+warns about the prefix, or the secret is not 40 chars, you've likely swapped the
+two values or copied a partial string. Redo this step.
 
 ---
 
-## Step 3 — Log in and find your leagues
+## Step 3: Log in and find your leagues
 
 ```powershell
 .\.venv\Scripts\python.exe -m ffball.discover --save
@@ -278,15 +278,15 @@ asks you to disambiguate. Re-run narrowing by name:
 
 ---
 
-## Step 4 — Pull the data
+## Step 4: Pull the data
 
 ```powershell
 .\.venv\Scripts\python.exe -m ffball.pull --all-seasons
 ```
 
 This walks every season found in step 3 and writes JSON into `data/`. Expect a
-minute or two; it prints each file as it lands. Individual endpoints that a
-given season doesn't support print a `!` line and are skipped — that is normal
+minute or two, and it prints each file as it lands. Individual endpoints that a
+given season doesn't support print a `!` line and are skipped, which is normal
 for older seasons and not a failure.
 
 Then the payoff:
@@ -301,13 +301,13 @@ Then the payoff:
 
 | Symptom | Cause and fix |
 | --- | --- |
-| `no YAHOO_CONSUMER_KEY environment variable value found` | Almost always the BOM problem. Run `doctor`; if it flags encoding, rewrite `.env` with the step 2 command. |
+| `no YAHOO_CONSUMER_KEY environment variable value found` | Almost always the BOM problem. Run `doctor`, and if it flags encoding, rewrite `.env` with the step 2 command. |
 | `INVALID_CLIENT` or `invalid client secret` | Client ID and Secret swapped, or a truncated paste. Check lengths with `doctor` (ID 60+ chars starting `dj0y`, secret exactly 40). |
-| Browser never opens | Copy the `AUTHORIZATION URL :` printed in the terminal into a browser by hand; the rest of the flow is identical. |
+| Browser never opens | Copy the `AUTHORIZATION URL :` printed in the terminal into a browser by hand. The rest of the flow is identical. |
 | The prompt closes instantly / no chance to paste the code | You ran it somewhere without interactive stdin (through Claude, or a non-interactive shell). Use a real PowerShell window. |
 | `401` or `Unauthorized` on a later run | Token went stale. Delete the `YAHOO_ACCESS_TOKEN`, `YAHOO_REFRESH_TOKEN`, `YAHOO_TOKEN_TYPE`, `YAHOO_TOKEN_TIME` and `YAHOO_GUID` lines from `.env`, keep the two consumer values, and re-run step 3 to log in again. |
 | `additional_authorization_required`, `403`, or a permissions error on every league call | This account isn't approved for the Fantasy Sports API. Apply at <https://sports.yahoo.com/developer/access/> using the draft answers in step 1. Your tokens stay valid meanwhile. |
-| Chose Public Client by mistake | No Client Secret is issued, so step 2 can't be completed. Create a new app as Confidential Client; you can delete the old one. |
+| Chose Public Client by mistake | No Client Secret is issued, so step 2 can't be completed. Create a new app as Confidential Client. You can delete the old one. |
 | `No league_id recorded for ... season` | Step 3 hasn't run, or didn't match that season. Re-run `discover --save`. |
 
 ## What must never be committed

@@ -13,7 +13,7 @@ current ADP) minus what the keeper rule charges you.
 
 Counting that surplus in *rounds* is misleading, though, because draft value is
 convex. Turning a 15th into a 7th is eight rounds but moves you between two
-cheap picks; turning a 6th into a 2nd is four rounds but buys a genuine
+cheap picks, while turning a 6th into a 2nd is four rounds but buys a genuine
 first-round-caliber player. So the ranking sorts on curve-adjusted value, and
 prints the raw round difference alongside it for sanity.
 
@@ -35,7 +35,7 @@ from typing import Any, Dict, List, Optional
 from . import cli, client, config
 
 # Draft pick value decays roughly exponentially. TAU is the number of picks over
-# which value falls by 1/e; ~40 picks (a bit over 3 rounds in a 12-team league)
+# which value falls by 1/e. About 40 picks (a bit over 3 rounds in a 12-team league)
 # reproduces the usual shape of fantasy auction values well enough to rank
 # keepers. Override per league with "pick_value_tau" in leagues.json.
 DEFAULT_PICK_VALUE_TAU = 40.0
@@ -256,7 +256,7 @@ def report(candidates: List[Candidate], upcoming_season: int, have_adp: bool) ->
 
     print("-" * 80)
     print("* charged the undrafted-player round (nobody drafted him last season).")
-    print("Value = curve-adjusted surplus; it is what the ranking sorts on.")
+    print("Value = curve-adjusted surplus, which is what the ranking sorts on.")
 
     ineligible = [c for c in candidates if c.ineligible_reason]
     if ineligible:
@@ -274,7 +274,7 @@ def report(candidates: List[Candidate], upcoming_season: int, have_adp: bool) ->
     if ranked and ranked[0].surplus_value is not None:
         best = ranked[0]
         print(
-            f"\nBest value: {best.name} — costs R{best.cost_round}, "
+            f"\nBest value: {best.name}, costs R{best.cost_round}, "
             f"going around round {best.adp_round:.1f} "
             f"({best.surplus_rounds:+.1f} rounds)."
         )

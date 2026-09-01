@@ -47,7 +47,7 @@ class Pacer:
     """Spaces out API calls and counts them.
 
     Call :meth:`wait` immediately before each request. The first request goes
-    out straight away; every later one waits ``delay`` seconds.
+    out straight away, and every later one waits ``delay`` seconds.
     """
 
     def __init__(self, delay: float = DEFAULT_DELAY_SECONDS) -> None:
@@ -76,7 +76,7 @@ def pull_core(query: Any, out_dir: Path, pacer: Pacer, force: bool) -> None:
         pacer.wait()
         try:
             payload = client.serialize(fetch(query))
-        except Exception as exc:  # noqa: BLE001 - keep going; some are season-dependent
+        except Exception as exc:  # noqa: BLE001 - keep going, some are season-dependent
             print(f"  ! {name}: {exc}", file=sys.stderr)
             continue
         write_json(target, payload)

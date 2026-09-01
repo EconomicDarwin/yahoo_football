@@ -2,7 +2,7 @@
 
 A ~16-season backfill is several hundred requests, so two properties matter and
 are easy to regress: calls are spaced out, and anything already on disk is not
-requested again. Both are checked here against a stub query — no network.
+requested again. Both are checked here against a stub query, with no network.
 
 Run it directly (no pytest needed):
 
@@ -26,7 +26,7 @@ class StubModel:
     """Stands in for a yfpy model: readable as attributes, serializes to a dict.
 
     Both halves matter. Code that has the live object reads attributes, while
-    anything reading the archive gets whatever `client.serialize` wrote — and
+    anything reading the archive gets whatever `client.serialize` wrote, and
     those are different shapes.
     """
 

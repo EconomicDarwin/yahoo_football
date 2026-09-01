@@ -34,7 +34,7 @@ def make_query(
     """Build an authenticated query object.
 
     The first call opens a browser for Yahoo's consent screen and then writes
-    the resulting tokens back into ``.env``; later calls refresh silently.
+    the resulting tokens back into ``.env``. Later calls refresh silently.
 
     Args:
         league_id: Yahoo league_id (the bare number, not the full league key).

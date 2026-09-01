@@ -1,4 +1,4 @@
-# Secrets — Yahoo OAuth consumer key/secret and access tokens live here.
+# Secrets: Yahoo OAuth consumer key/secret and access tokens live here.
 # Never commit these.
 .env
 private.json
