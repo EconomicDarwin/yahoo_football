@@ -130,25 +130,34 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 **Brief Company Description**
 
 > Not a company. I am an individual who has commissioned a single 12-team Yahoo
-> fantasy football keeper league for over a decade. This is a personal,
+> fantasy football keeper league for about sixteen years. This is a personal,
 > non-commercial project with no organization behind it, no users other than
 > me, and no revenue.
 
 **Describe Your Intended Use Case**
 
-> I run a single 12-team Yahoo fantasy football keeper league and have
-> commissioned it for over a decade. I have built a personal command-line tool
-> that archives my own league's data to local JSON files and analyzes it.
+> I have commissioned a single 12-team Yahoo fantasy football keeper league for
+> about sixteen years, with largely the same group of friends throughout. I have
+> built a personal command-line tool that archives my own league's history to
+> local JSON files and analyzes it.
 >
-> Its main function is keeper valuation. Our league lets each manager retain
-> one player at the draft-round cost that player was drafted at the previous
-> season; the tool compares that cost against the player's current average
-> draft position to identify which player is the best value to keep. I
-> currently do this by reading screenshots of the draft board by hand.
+> The primary purpose is the historical record. Yahoo's interface is built around
+> the current season, so sixteen years of drafts, trades, matchups and results
+> are effectively unqueryable. I want an all-time record book for the league:
+> career standings per manager, head-to-head results between long-time rivals,
+> luck-adjusted records, draft retrospectives and trade histories. It is for the
+> enjoyment of the league's own members.
 >
-> Data required, all read-only and all for leagues my own Yahoo account belongs
-> to: league metadata and settings, standings, teams, rosters, draft results,
-> transactions, weekly scoreboards, and player draft analysis (ADP).
+> A secondary function is the yearly keeper decision. Our league lets each
+> manager retain one player at the draft-round cost that player was drafted at
+> the previous season; the tool compares that cost against the player's current
+> average draft position. I currently do this by reading screenshots of the
+> draft board by hand.
+>
+> Data required, all read-only and all for the league my own Yahoo account
+> belongs to: league metadata and settings, standings, teams, rosters, draft
+> results, transactions, weekly scoreboards, and player draft analysis (ADP),
+> across the league's past seasons as well as the current one.
 >
 > Access is limited to personal, single-league use. I am the only user. The
 > tool runs locally under my own credentials, is not distributed or hosted, has
@@ -156,9 +165,14 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 
 **Additional Notes**
 
-> Read-only access is sufficient; I do not need write access. Request volume is
-> minimal — a few dozen requests a handful of times per season, concentrated
-> around the draft, with responses cached locally to avoid repeat calls.
+> Read-only access is sufficient; I do not need write access.
+>
+> Request volume is dominated by a one-time historical backfill of roughly
+> sixteen seasons — on the order of several hundred requests, more if I pull
+> week-by-week rosters — which I will run gradually rather than all at once.
+> Everything is written to local JSON and read from there afterwards, so the
+> backfill happens once and is never repeated. Ongoing use after that is
+> minimal: a refresh during the season and some activity around the draft.
 >
 > The tool is not a commercial product: it is a local command-line script that
 > runs on my own computer and is not hosted or distributed to anyone. The URL
