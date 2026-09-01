@@ -160,10 +160,10 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 > minimal â€” a few dozen requests a handful of times per season, concentrated
 > around the draft, with responses cached locally to avoid repeat calls.
 >
-> I have no product website, because the tool is not a product: it is a local
-> command-line script that runs on my own computer and is not published,
-> hosted, or distributed. The URL field above is my personal GitHub profile,
-> since that field requires a URL.
+> The tool is not a commercial product: it is a local command-line script that
+> runs on my own computer and is not hosted or distributed to anyone. The URL
+> above is its public source repository, which is the closest thing to a
+> website it has, and shows exactly what data it reads and why.
 >
 > I have already created a YDN app (Client ID above) and completed the OAuth
 > handshake successfully. Fantasy endpoints currently return
