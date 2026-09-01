@@ -1,7 +1,7 @@
-# Fourth and 2wenty â€” league tools
+# Fourth and 2wenty — league tools
 
 A personal, read-only command-line tool for a single Yahoo fantasy football
-keeper league. It archives the league's own data to local JSON and analyzes it â€”
+keeper league. It archives the league's own data to local JSON and analyzes it —
 principally **keeper valuation**, deciding which player is worth retaining under
 the league's keeper rules.
 
@@ -33,14 +33,14 @@ against what he would actually cost in this year's draft.
 Counting surplus in *rounds* is misleading, because draft value is convex.
 Turning a 15th into a 7th is eight rounds, but it moves you between two cheap
 picks. Turning a 6th into a 2nd is only four rounds, but it buys a genuine
-first-round-caliber player â€” worth much more.
+first-round-caliber player — worth much more.
 
 So `keepers.py` converts rounds to overall picks and scores them on a decay
 curve, `value(pick) = exp(-(pick - 1) / TAU)` with `TAU = 40` picks. The ranking
 sorts on curve-adjusted surplus and prints the raw round difference beside it as
 a sanity check. Tune per league with `pick_value_tau` in `leagues.json`.
 
-A worked example â€” the two candidates that mattered in 2025:
+A worked example — the two candidates that mattered in 2025:
 
 | Player | Keeper cost | Market | Rounds | Curve-adjusted |
 | --- | --- | --- | --- | --- |
@@ -54,18 +54,18 @@ outcome, so a change to the scoring cannot silently flip the answer.
 ## Layout
 
 ```
-â”œâ”€â”€ SETUP.md              # first-time setup, step by step
-â”œâ”€â”€ ffball/
-â”‚   â”œâ”€â”€ config.py         # paths + leagues.json access
-â”‚   â”œâ”€â”€ client.py         # authenticated Yahoo API client
-â”‚   â”œâ”€â”€ cli.py            # shared clean-exit wrapper
-â”‚   â”œâ”€â”€ doctor.py         # verify the setup, diagnose what's wrong
-â”‚   â”œâ”€â”€ discover.py       # find league IDs across seasons
-â”‚   â”œâ”€â”€ pull.py           # archive a season to data/
-â”‚   â””â”€â”€ keepers.py        # rank keeper candidates
-â”œâ”€â”€ tests/test_keepers.py # keeper math regression test
-â”œâ”€â”€ data/                 # pulled league JSON (created by pull)
-â””â”€â”€ leagues.json          # league identity, rules, season -> league_id
+├── SETUP.md              # first-time setup, step by step
+├── ffball/
+│   ├── config.py         # paths + leagues.json access
+│   ├── client.py         # authenticated Yahoo API client
+│   ├── cli.py            # shared clean-exit wrapper
+│   ├── doctor.py         # verify the setup, diagnose what's wrong
+│   ├── discover.py       # find league IDs across seasons
+│   ├── pull.py           # archive a season to data/
+│   └── keepers.py        # rank keeper candidates
+├── tests/test_keepers.py # keeper math regression test
+├── data/                 # pulled league JSON (created by pull)
+└── leagues.json          # league identity, rules, season -> league_id
 ```
 
 ## Setup
@@ -74,7 +74,7 @@ See **[SETUP.md](SETUP.md)**. Short version:
 
 1. Register a Yahoo app as a **Confidential Client** with redirect URI
    `https://localhost:8080`.
-2. Put the Client ID and Secret in `.env` (BOM-free â€” SETUP.md has the exact
+2. Put the Client ID and Secret in `.env` (BOM-free — SETUP.md has the exact
    command; a UTF-8 BOM silently hides the first variable from `python-dotenv`).
 3. `python -m ffball.discover --save` to log in and record league IDs.
 
@@ -124,4 +124,4 @@ Yahoo Fantasy.
 
 ## License
 
-MIT â€” see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE).

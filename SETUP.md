@@ -13,13 +13,13 @@ Run it whenever you want. It only reports; it never changes anything.
 
 ---
 
-## Step 0 â€” Open the right terminal
+## Step 0 — Open the right terminal
 
-Open **Windows PowerShell** (not through Claude â€” step 3 needs a real
+Open **Windows PowerShell** (not through Claude — step 3 needs a real
 interactive prompt) and go to the project:
 
 ```powershell
-cd C:\Users\micha\Documents\github\personal\fantasy_football
+cd C:\Users\micha\Documents\github\yahoo_football
 ```
 
 Confirm the tooling is healthy before touching Yahoo:
@@ -28,16 +28,16 @@ Confirm the tooling is healthy before touching Yahoo:
 .\.venv\Scripts\python.exe -m ffball.doctor
 ```
 
-Expect green on Python, yfpy, and the venv, and a red `.env exists` â€” that is
+Expect green on Python, yfpy, and the venv, and a red `.env exists` — that is
 correct at this stage, it's what step 2 creates.
 
 ---
 
-## Step 1 â€” Create the Yahoo app
+## Step 1 — Create the Yahoo app
 
 > **The form changed in 2025 and most guides online (including yfpy's own docs)
 > are out of date.** There is no longer an "Installed Application" radio
-> button, and â€” importantly â€” **there is no Fantasy Sports checkbox under API
+> button, and — importantly — **there is no Fantasy Sports checkbox under API
 > Permissions**. Yahoo moved Fantasy Sports access behind a separate approval
 > process. See "Fantasy Sports API access" below.
 
@@ -59,12 +59,12 @@ Why those last two matter:
 
 - **Confidential Client is required.** It is the option that issues a Client
   Secret. Public Client issues an ID only, and this tooling authenticates with
-  a secret â€” picking Public would leave you unable to complete step 2.
+  a secret — picking Public would leave you unable to complete step 2.
 - **Leave OpenID Connect Permissions and TW Auction unchecked.** Neither grants
   fantasy access. OpenID Connect only adds profile/email scopes you don't need,
   and TW Auction is unrelated.
 - **Redirect URI is required even though it is never used.** The library
-  authenticates out-of-band â€” Yahoo shows you a code to paste rather than
+  authenticates out-of-band — Yahoo shows you a code to paste rather than
   redirecting anywhere. Yahoo just refuses to save the form with the field
   empty. `https://localhost:8080` is fine; it does not need to be reachable.
 
@@ -89,7 +89,7 @@ oauth_problem="additional_authorization_required"
 ```
 
 That is Yahoo saying the token is valid but the app has no Fantasy Sports
-entitlement. There is no workaround in the app settings â€” the permission is
+entitlement. There is no workaround in the app settings — the permission is
 simply not offered on the form any more. Approval is the only path.
 
 Two things this does *not* mean: your credentials are not wrong, and your login
@@ -100,13 +100,13 @@ everything works with no need to log in again.
 
 ```
 [ ok ] live API call           reached Yahoo; credentials accepted
-[FAIL] fantasy API access      NOT granted â€” apply at https://sports.yahoo.com/developer/access/
+[FAIL] fantasy API access      NOT granted — apply at https://sports.yahoo.com/developer/access/
 ```
 
 Apply at **<https://sports.yahoo.com/developer/access/>**. Yahoo warns that
 "incomplete or insufficiently detailed submissions cannot be evaluated and will
 be closed without further correspondence," so answer specifically. Personal and
-single-league use is an explicitly eligible category â€” say so plainly rather
+single-league use is an explicitly eligible category — say so plainly rather
 than dressing the project up as a company.
 
 **Do not delete or recreate the Yahoo app before applying.** The form has a
@@ -121,10 +121,10 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 | Business Title | `Commissioner, Fourth and 2wenty fantasy football league (personal project, not a business)` |
 | Email Address | `[the email on your Yahoo account]` |
 | Phone Number | `[your phone]` |
-| Business Name & Address | `Individual â€” no business entity. Personal project. [city, state, ZIP]` |
+| Business Name & Address | `Individual — no business entity. Personal project. [city, state, ZIP]` |
 | Consumer-Facing Product or App Name | `Fourth and 2wenty League Tools (private, not distributed)` |
-| Website URL or App Store Details | `https://github.com/EconomicDarwin` â€” this field is validated as a URL, so prose is rejected. There is no product site (the tool isn't distributed), so a public GitHub profile is the honest stand-in; explain that in Additional Notes. |
-| Expected Users | `Small (under 1,000)` â€” realistically one |
+| Website URL or App Store Details | `https://github.com/EconomicDarwin/yahoo_football` — this field is validated as a URL, so prose is rejected. The public repo is the honest answer and shows a reviewer exactly what the tool does. |
+| Expected Users | `Small (under 1,000)` — realistically one |
 | Client ID | the Client ID from the YDN app you already created |
 
 **Brief Company Description**
@@ -157,7 +157,7 @@ Field-by-field answers for this project. Bracketed items are yours to fill in.
 **Additional Notes**
 
 > Read-only access is sufficient; I do not need write access. Request volume is
-> minimal â€” a few dozen requests a handful of times per season, concentrated
+> minimal — a few dozen requests a handful of times per season, concentrated
 > around the draft, with responses cached locally to avoid repeat calls.
 >
 > The tool is not a commercial product: it is a local command-line script that
@@ -174,10 +174,10 @@ Read access is all Yahoo currently offers, and all this tooling needs.
 
 ---
 
-## Step 2 â€” Save the credentials
+## Step 2 — Save the credentials
 
 **Do not create `.env` in Notepad.** Notepad and PowerShell's `Out-File` both
-write a UTF-8 BOM, and a BOM silently hides the *first* variable in the file â€”
+write a UTF-8 BOM, and a BOM silently hides the *first* variable in the file —
 you get "no consumer key found" with a file that looks perfect on screen. I hit
 this while testing, so it is a real trap, not a theoretical one.
 
@@ -206,10 +206,10 @@ You want to see:
 [ ok ] YAHOO_CONSUMER_KEY      set (96 chars)
 [ ok ] YAHOO_CONSUMER_SECRET   set (40 chars)
 [ ok ] .env is gitignored      credentials will not be committed
-[warn] logged in               no token yet â€” run: python -m ffball.discover --save
+[warn] logged in               no token yet — run: python -m ffball.discover --save
 ```
 
-That last warning is expected â€” step 3 clears it.
+That last warning is expected — step 3 clears it.
 
 The key's length varies by account (90-100 chars is typical); only the `dj0y`
 prefix is meaningful. The secret is always exactly 40. If the key check warns
@@ -218,7 +218,7 @@ values or copied a partial string; redo this step.
 
 ---
 
-## Step 3 â€” Log in and find your leagues
+## Step 3 — Log in and find your leagues
 
 ```powershell
 .\.venv\Scripts\python.exe -m ffball.discover --save
@@ -264,7 +264,7 @@ asks you to disambiguate. Re-run narrowing by name:
 
 ---
 
-## Step 4 â€” Pull the data
+## Step 4 — Pull the data
 
 ```powershell
 .\.venv\Scripts\python.exe -m ffball.pull --all-seasons
@@ -272,7 +272,7 @@ asks you to disambiguate. Re-run narrowing by name:
 
 This walks every season found in step 3 and writes JSON into `data/`. Expect a
 minute or two; it prints each file as it lands. Individual endpoints that a
-given season doesn't support print a `!` line and are skipped â€” that is normal
+given season doesn't support print a `!` line and are skipped — that is normal
 for older seasons and not a failure.
 
 Then the payoff:

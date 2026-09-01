@@ -47,7 +47,7 @@ ROSTER_2025 = {
     "Saints": ("DEF", None),
 }
 
-# Estimated 2026 ADP round. Not Yahoo data â€” see module docstring.
+# Estimated 2026 ADP round. Not Yahoo data — see module docstring.
 ESTIMATED_ADP_ROUND = {
     "CeeDee Lamb": 2.0,
     "Chris Olave": 2.0,
