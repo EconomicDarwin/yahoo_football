@@ -169,12 +169,21 @@ python -m ffball.doctor --online   # plus one live API call
 | `python -m ffball.discover [--save] [--match NAME]` | List leagues by season; record their IDs |
 | `python -m ffball.pull --season 2025` | Archive one season to `data/` |
 | `python -m ffball.pull --all-seasons` | Archive every recorded season |
+| `python -m ffball.pull --all-seasons --delay 2` | Same, pacing calls 2s apart |
+| `python -m ffball.pull --season 2025 --force` | Re-request files already archived |
 | `python -m ffball.keepers --season 2025` | Rank keeper candidates for the next draft |
 | `python -m ffball.keepers --season 2025 --offline` | Same, without the ADP lookup |
-| `python tests/test_keepers.py` | Run the keeper math regression test |
+| `python tests/test_keepers.py` | Keeper math regression test |
+| `python tests/test_pull.py` | Archive pacing and resume test |
 
 `pull --include core` is cheap (six requests). `rosters` costs one request per
 team and `matchups` one per week, so they are opt-in.
+
+The backfill is built to be a polite trickle. Every call is paced (1s apart by
+default, `--delay` to change it), and anything already on disk is skipped, so an
+interrupted backfill resumes without re-requesting what it already has. `pull`
+reports the total requests it made. Use `--force` only when you want to refresh
+data that is already archived.
 
 ## Notes
 
