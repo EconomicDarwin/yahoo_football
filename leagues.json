@@ -1,0 +1,26 @@
+{
+  "fourth_and_2wenty": {
+    "display_name": "Fourth and 2wenty",
+    "game_code": "nfl",
+    "num_teams": 12,
+    "my_team_name": "Si Se Puede",
+    "keeper_rules": {
+      "keepers_per_team": 1,
+      "eligible_from": "end_of_year_roster",
+      "cost_basis": "draft_round_any_team",
+      "undrafted_cost_round": 15,
+      "repeat_keeps_allowed": false
+    },
+    "keeper_history": {
+      "2025": "Josh Jacobs",
+      "2026": "Chris Olave"
+    },
+    "seasons": {},
+    "notes": [
+      "seasons maps a season year to its Yahoo league_id. Populate it by running:",
+      "  python -m ffball.discover --save",
+      "num_teams and my_team_name were inferred from the 2025 draft board and are",
+      "confirmed against the API on the first discover/pull run."
+    ]
+  }
+}

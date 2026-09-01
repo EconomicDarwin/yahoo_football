@@ -1,0 +1,19 @@
+# Secrets — Yahoo OAuth consumer key/secret and access tokens live here.
+# Never commit these.
+.env
+private.json
+token.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# yfpy writes its own logs
+logs/
+*.log
+
+# Note: data/ is intentionally NOT ignored. Pulled league JSON is committed on
+# purpose as an archive, because Yahoo does not keep old league seasons forever.
